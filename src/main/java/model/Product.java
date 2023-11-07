@@ -1,5 +1,4 @@
 package model;
 
 public class Product {
- public static void main (String[]args) 
-}
+ public static void main (String[]args) }
