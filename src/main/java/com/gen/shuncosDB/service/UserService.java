@@ -1,5 +1,7 @@
 package com.gen.shuncosDB.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,11 @@ import com.gen.shuncosDB.repository.UserRepository;
 public class UserService {
 	@Autowired
 	private UserRepository userRepository;
-
+	
+	//Get all products
+	public List<User> getAllUsers(){
+		return userRepository.findAll();
+	}
 
 	//Get
 	public User getUserById(Long id){

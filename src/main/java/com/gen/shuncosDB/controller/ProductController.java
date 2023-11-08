@@ -31,7 +31,6 @@ public class ProductController {
     public ProductController(ProductService productService) {
 		this.productService = productService;
 	}
-	
 
 	// GET all books
     @GetMapping()
@@ -40,7 +39,7 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
- // GET a single book by id
+    // GET a single product by id
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         Product product = productService.getProductById(id);
@@ -51,13 +50,13 @@ public class ProductController {
         }
     }
 
-    // POST a new book
+    // POST a new product
     @PostMapping
     public Product createProduct(@RequestBody Product product) {
         return productService.createProduct(product);
     }
 
-    // PUT to update a book
+    // PUT to update a product
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
         Product updatedProd = productService.updateProduct(id, productDetails);
@@ -68,7 +67,7 @@ public class ProductController {
         }
     }
 
-    // DELETE a book
+    // DELETE a product
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
     	Product prod = productService.getProductById(id);

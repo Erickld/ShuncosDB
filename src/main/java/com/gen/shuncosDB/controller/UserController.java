@@ -1,6 +1,8 @@
 package com.gen.shuncosDB.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import com.gen.shuncosDB.model.User;
 import com.gen.shuncosDB.service.UserService;
@@ -28,6 +31,14 @@ public class UserController {
     public UserController(UserService userService) {
 		this.userService = userService;
 	}
+	
+	// GET all users
+    @GetMapping()
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
 
  // GET a single book by id
     @GetMapping("/{id}")
