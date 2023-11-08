@@ -3,18 +3,16 @@ package model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name="Order")
 public class Order {
-
-    // Columnas de la Tabla Order
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="order_id")
-    private Long id;
+    private Long order_id;
 
     @Column(name="create_at", nullable = false)
     @Temporal(TemporalType.DATE)
@@ -24,25 +22,25 @@ public class Order {
     private Long status;
 
     @Column(name="subtotal_price", nullable = false)
-    private Double subtotalPrice;
+    private Double subtotal_price;
 
     @Column(name="has_coupon", columnDefinition = "TINYINT")
-    private Boolean hasCoupon;
+    private Boolean has_coupon;
 
-    @Column(name="coupon_text", length = 50)
-    private String couponText;
+    @Column(name="coupon_text", nullable = true, length = 50)
+    private String coupon_text;
 
-    @Column(name="discount_applied")
-    private Double discountApplied;
+    @Column(name="discount_applied", nullable = true)
+    private Double discount_applied;
 
-    @Column(name="coupon_discount")
-    private Double couponDiscount;
+    @Column(name="coupon_percentage", nullable = true)
+    private Double coupon_percentage;
 
     @Column(name="shipment_price", nullable = false)
-    private Double shipmentPrice;
+    private Double shipment_price;
 
     @Column(name="total_price", nullable = false)
-    private Double totalPrice;
+    private Double total_price;
 
     // Relaciones de la tabla Order
 
@@ -54,167 +52,181 @@ public class Order {
     @JoinColumn(name="Address_address_id", referencedColumnName = "address_id")
     private Address address;
 
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Payment_payment_id", referencedColumnName = "payment_id")
     private Payment payment;
 
-    @ManyToMany
-    @JoinTable(
-            name = "Order_has_Product",
-            joinColumns = @JoinColumn(name = "Order_order_id"),
-            inverseJoinColumns = @JoinColumn(name="Product_product_id")
-    )
-    private Set<Product> products;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<OrderHasProduct> orderHasProduct = new HashSet<>();
+
 
 
     // Constructores tabla Order
-
     public Order() {
 
     }
 
-    public Order(Long id, Date create_at, Long status, Double subtotalPrice, Boolean hasCoupon, String couponText, Double discountApplied, Double couponDiscount, Double shipmentPrice, Double totalPrice) {
-        this.id = id;
-        this.create_at = create_at;
-        this.status = status;
-        this.subtotalPrice = subtotalPrice;
-        this.hasCoupon = hasCoupon;
-        this.couponText = couponText;
-        this.discountApplied = discountApplied;
-        this.couponDiscount = couponDiscount;
-        this.shipmentPrice = shipmentPrice;
-        this.totalPrice = totalPrice;
-    }
 
-    public Long getId() {
-        return id;
-    }
+	public Order(Long order_id, Date create_at, Long status, Double subtotal_price, Boolean has_coupon,
+			String coupon_text, Double discount_applied, Double coupon_percentage, Double shipment_price,
+			Double total_price, User user, Address address, Payment payment, Set<OrderHasProduct> orderHasProduct) {
+		this.order_id = order_id;
+		this.create_at = create_at;
+		this.status = status;
+		this.subtotal_price = subtotal_price;
+		this.has_coupon = has_coupon;
+		this.coupon_text = coupon_text;
+		this.discount_applied = discount_applied;
+		this.coupon_percentage = coupon_percentage;
+		this.shipment_price = shipment_price;
+		this.total_price = total_price;
+		this.user = user;
+		this.address = address;
+		this.payment = payment;
+		this.orderHasProduct = orderHasProduct;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public Date getCreate_at() {
-        return create_at;
-    }
+	public Long getOrder_id() {
+		return order_id;
+	}
 
-    public void setCreate_at(Date create_at) {
-        this.create_at = create_at;
-    }
 
-    public Long getStatus() {
-        return status;
-    }
+	public void setOrder_id(Long order_id) {
+		this.order_id = order_id;
+	}
 
-    public void setStatus(Long status) {
-        this.status = status;
-    }
 
-    public Double getSubtotalPrice() {
-        return subtotalPrice;
-    }
+	public Date getCreate_at() {
+		return create_at;
+	}
 
-    public void setSubtotalPrice(Double subtotalPrice) {
-        this.subtotalPrice = subtotalPrice;
-    }
 
-    public Boolean getHasCoupon() {
-        return hasCoupon;
-    }
+	public void setCreate_at(Date create_at) {
+		this.create_at = create_at;
+	}
 
-    public void setHasCoupon(Boolean hasCoupon) {
-        this.hasCoupon = hasCoupon;
-    }
 
-    public String getCouponText() {
-        return couponText;
-    }
+	public Long getStatus() {
+		return status;
+	}
 
-    public void setCouponText(String couponText) {
-        this.couponText = couponText;
-    }
 
-    public Double getDiscountApplied() {
-        return discountApplied;
-    }
+	public void setStatus(Long status) {
+		this.status = status;
+	}
 
-    public void setDiscountApplied(Double discountApplied) {
-        this.discountApplied = discountApplied;
-    }
 
-    public Double getCouponDiscount() {
-        return couponDiscount;
-    }
+	public Double getSubtotal_price() {
+		return subtotal_price;
+	}
 
-    public void setCouponDiscount(Double couponDiscount) {
-        this.couponDiscount = couponDiscount;
-    }
 
-    public Double getShipmentPrice() {
-        return shipmentPrice;
-    }
+	public void setSubtotal_price(Double subtotal_price) {
+		this.subtotal_price = subtotal_price;
+	}
 
-    public void setShipmentPrice(Double shipmentPrice) {
-        this.shipmentPrice = shipmentPrice;
-    }
 
-    public Double getTotalPrice() {
-        return totalPrice;
-    }
+	public Boolean getHas_coupon() {
+		return has_coupon;
+	}
 
-    public void setTotalPrice(Double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
 
-    public User getUser() {
-        return user;
-    }
+	public void setHas_coupon(Boolean has_coupon) {
+		this.has_coupon = has_coupon;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 
-    public Address getAddress() {
-        return address;
-    }
+	public String getCoupon_text() {
+		return coupon_text;
+	}
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 
-    public Payment getPayment() {
-        return payment;
-    }
+	public void setCoupon_text(String coupon_text) {
+		this.coupon_text = coupon_text;
+	}
 
-    public void setPayment(Payment payment) {
-        this.payment = payment;
-    }
 
-    public Set<Product> getProducts() {
-        return products;
-    }
+	public Double getDiscount_applied() {
+		return discount_applied;
+	}
 
-    public void setProducts(Set<Product> products) {
-        this.products = products;
-    }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", create_at=" + create_at +
-                ", status=" + status +
-                ", subtotalPrice=" + subtotalPrice +
-                ", hasCoupon=" + hasCoupon +
-                ", couponText='" + couponText + '\'' +
-                ", discountApplied=" + discountApplied +
-                ", couponDiscount=" + couponDiscount +
-                ", shipmentPrice=" + shipmentPrice +
-                ", totalPrice=" + totalPrice +
-                ", user=" + user +
-                ", address=" + address +
-                ", payment=" + payment +
-                ", products=" + products +
-                '}';
-    }
+	public void setDiscount_applied(Double discount_applied) {
+		this.discount_applied = discount_applied;
+	}
+
+
+	public Double getCoupon_percentage() {
+		return coupon_percentage;
+	}
+
+
+	public void setCoupon_percentage(Double coupon_percentage) {
+		this.coupon_percentage = coupon_percentage;
+	}
+
+
+	public Double getShipment_price() {
+		return shipment_price;
+	}
+
+
+	public void setShipment_price(Double shipment_price) {
+		this.shipment_price = shipment_price;
+	}
+
+
+	public Double getTotal_price() {
+		return total_price;
+	}
+
+
+	public void setTotal_price(Double total_price) {
+		this.total_price = total_price;
+	}
+
+
+	public User getUser() {
+		return user;
+	}
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
+	public Address getAddress() {
+		return address;
+	}
+
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+
+	public Payment getPayment() {
+		return payment;
+	}
+
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
+
+
+	public Set<OrderHasProduct> getOrderHasProduct() {
+		return orderHasProduct;
+	}
+
+
+	public void setOrderHasProduct(Set<OrderHasProduct> orderHasProduct) {
+		this.orderHasProduct = orderHasProduct;
+	}
+
+   
 }

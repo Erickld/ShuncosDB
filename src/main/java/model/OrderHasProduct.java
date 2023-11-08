@@ -1,17 +1,9 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Order_has_Product")
@@ -31,25 +23,24 @@ public class OrderHasProduct {
     private Product product;
     
     @Column(name = "quantity")
-    private int quantity;
+    private Long quantity;
     
+    @Column(name = "size")
+    private Long size;
 
-    // Constructor with parameters
-	public OrderHasProduct(OrderProductId id, Order order, Product product, int quantity) {
+    // Default constructor
+ 	public OrderHasProduct() {
+ 	}
+    
+    public OrderHasProduct(OrderProductId id, Order order, Product product, Long quantity, Long size) {
 		super();
 		this.id = id;
 		this.order = order;
 		this.product = product;
 		this.quantity = quantity;
+		this.size = size;
 	}
-	
-    // Default constructor
- 	public OrderHasProduct() {
- 		super();
- 	}
 
-	
-	//Getters and setters
 	public OrderProductId getId() {
 		return id;
 	}
@@ -74,19 +65,27 @@ public class OrderHasProduct {
 		this.product = product;
 	}
 
-	public int getQuantity() {
+	public Long getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(int quantity) {
+	public void setQuantity(Long quantity) {
 		this.quantity = quantity;
 	}
-	
-    
-    // Embeddable key class
+
+	public Long getSize() {
+		return size;
+	}
+
+	public void setSize(Long size) {
+		this.size = size;
+	}
+
+
+	// Embeddable key class
 	@Embeddable
 	public static class OrderProductId implements Serializable {
-		
+
 		@Column(name = "Order_order_id")
 		private Long orderId;
 		
@@ -95,13 +94,11 @@ public class OrderHasProduct {
 		
 		// Default constructor
 		public OrderProductId() {
-			super();
 		}
 
 		
 		// Constructor with parameters
 		public OrderProductId(Long orderId, Long productId) {
-			super();
 			this.orderId = orderId;
 			this.productId = productId;
 		}
@@ -127,14 +124,26 @@ public class OrderHasProduct {
 			this.productId = productId;
 		}
 
-		
-		// toString()
+
 		@Override
-		public String toString() {
-			return "OrderProductId [orderId=" + orderId + ", productId=" + productId + "]";
+		public int hashCode() {
+			return Objects.hash(orderId, productId);
 		}
+
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			OrderProductId other = (OrderProductId) obj;
+			return Objects.equals(orderId, other.orderId) && Objects.equals(productId, other.productId);
+		}
+
 		
-	
 	}
     
  

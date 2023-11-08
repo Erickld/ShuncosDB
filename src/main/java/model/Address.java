@@ -2,14 +2,13 @@ package model;
 
 import javax.persistence.*;
 
-
 @Entity
 @Table(name = "Address")
 public class Address {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "address_id")
-	private int id;
+	private Long address_id;
 	
 	@Column(name = "country", nullable = false, length = 50)
 	private String country;
@@ -32,17 +31,17 @@ public class Address {
 	@Column (name = "phone", nullable = false, length = 15)
 	private String phone;
 	
+	@OneToOne(mappedBy = "address")
+	private Order order;
+
 	
 	// Constructor empty
 	public Address() {
-
 	}
 
-	// Constructor with ID
-	public Address(int id, String country, String state, String city, String colony, String street, String zip_code,
-			String phone) {
-		super();
-		this.id = id;
+	public Address(Long address_id, String country, String state, String city, String colony, String street,
+			String zip_code, String phone) {
+		this.address_id = address_id;
 		this.country = country;
 		this.state = state;
 		this.city = city;
@@ -52,12 +51,12 @@ public class Address {
 		this.phone = phone;
 	}
 
-	public int getId() {
-		return id;
+	public Long getAddress_id() {
+		return address_id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setAddress_id(Long address_id) {
+		this.address_id = address_id;
 	}
 
 	public String getCountry() {
@@ -115,5 +114,14 @@ public class Address {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
 
 }

@@ -5,34 +5,37 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="Payment")
 public class Payment {
-
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	@Column(name = "payment_id")
 	private Long payment_id;
 	
-	@Column (name ="card_number", nullable = false)
+	@Column(name ="card_number", nullable = false, length = 25)
 	private String card_number;
-	@Column (name ="owner_name", nullable = false)
+
+	@Column(name ="owner_name", nullable = false, length = 100)
 	private String owner_name;
-	@Column (name ="expiration_date", nullable = false)
+
+	@Column(name ="expiration_date", nullable = false, length = 15)
 	private String expiration_date;
-	@Column (name ="pin", nullable = false)
+
+	@Column(name ="pin", nullable = false, length = 5)
 	private String pin;
 	
+	@OneToOne(mappedBy = "payment")
+	private Order order;
+
 	
 	public Payment() {
-		super();
 	}
 
-
 	public Payment(Long payment_id, String card_number, String owner_name, String expiration_date, String pin) {
-		super();
 		this.payment_id = payment_id;
 		this.card_number = card_number;
 		this.owner_name = owner_name;
@@ -91,14 +94,11 @@ public class Payment {
 	}
 
 
-	@Override
-	public String toString() {
-		return "Payment [payment_id=" + payment_id + ", card_number=" + card_number + ", owner_name=" + owner_name
-				+ ", expiration_date=" + expiration_date + ", pin=" + pin + "]";
-	}
-	
-	
-	
-	
-	
+//	@Override
+//	public String toString() {
+//		return "Payment [payment_id=" + payment_id + ", card_number=" + card_number + ", owner_name=" + owner_name
+//				+ ", expiration_date=" + expiration_date + ", pin=" + pin + "]";
+//	}
+//
+
 }
