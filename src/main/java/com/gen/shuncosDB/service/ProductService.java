@@ -19,6 +19,12 @@ public class ProductService {
 	public List<Product> getAllProducts(){
 		return productRepository.findAll();
 	}
+	
+	//Get products filter by model
+	public List<Product> getProductsByModel(String modelTxt){
+		return productRepository.findByModelContaining(modelTxt);
+	}
+
 
 	//Get
 	public Product getProductById(Long id){
