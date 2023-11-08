@@ -1,5 +1,5 @@
 
-package model;
+package com.gen.shuncosDB.model;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,6 +29,9 @@ public class User {
     @Column(name = "password", nullable = false, length = 50)
     private String password;
 
+    @Column(name = "is_admin", nullable = false, columnDefinition = "TINYINT")
+    private boolean is_admin;
+    
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Order> order = new HashSet<>();
 
@@ -36,14 +39,14 @@ public class User {
 	}
 
 	public User(Long user_id, String first_name, String last_name, String username, String email, String password,
-			Set<Order> order) {
+			boolean is_admin) {
 		this.user_id = user_id;
 		this.first_name = first_name;
 		this.last_name = last_name;
 		this.username = username;
 		this.email = email;
 		this.password = password;
-		this.order = order;
+		this.is_admin = is_admin;
 	}
 
 	public Long getUser_id() {
@@ -100,8 +103,17 @@ public class User {
 
 	public void setOrder(Set<Order> order) {
 		this.order = order;
+	}
+
+	public boolean isIs_admin() {
+		return is_admin;
+	}
+
+	public void setIs_admin(boolean is_admin) {
+		this.is_admin = is_admin;
 	}    
     
+	
 }
 
 

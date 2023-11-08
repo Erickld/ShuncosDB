@@ -1,12 +1,13 @@
-package service;
+package com.gen.shuncosDB.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import model.Product;
-import repository.ProductRepository;
+import com.gen.shuncosDB.model.Product;
+import com.gen.shuncosDB.repository.ProductRepository;
+
 
 @Service
 public class ProductService {

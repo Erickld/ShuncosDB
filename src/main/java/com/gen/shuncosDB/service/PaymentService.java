@@ -1,10 +1,12 @@
-package service;
+package com.gen.shuncosDB.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import model.Payment;
-import repository.PaymentRepository;
+import com.gen.shuncosDB.model.Payment;
+import com.gen.shuncosDB.repository.PaymentRepository;
+
+
 
 @Service
 public class PaymentService {
