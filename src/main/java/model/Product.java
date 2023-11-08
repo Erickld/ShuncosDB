@@ -1,11 +1,13 @@
 package model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "Product")
 public class Product {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
@@ -34,19 +36,15 @@ public class Product {
     
     @Column(name = "price", nullable = false)
     private Double price;
+    
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<OrderHasProduct> orderHasProduct = new HashSet<>();
 
-    //@ManyToMany(mappedBy = "products")
-    //private Set<Order> orders = new HashSet<>();
-    
-    //@OneToMany(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval = true)
-    //private Set<OrderHasProducts> orderHasProducts = new HashSet<>();
-    
     public Product() {
     }
 
     public Product(Long product_id, String model, String image_url, String sleeve_type, String genre,
             boolean is_adult_size, String size_list, String color, Double price) {
-        super();
         this.product_id = product_id;
         this.model = model;
         this.image_url = image_url;
@@ -129,6 +127,5 @@ public class Product {
     public void setPrice(Double price) {
         this.price = price;
     }
-
 
 }
