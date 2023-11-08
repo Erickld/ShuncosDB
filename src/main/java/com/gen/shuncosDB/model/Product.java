@@ -1,4 +1,4 @@
-package model;
+package com.gen.shuncosDB.model;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -128,4 +128,12 @@ public class Product {
         this.price = price;
     }
 
+	public Set<OrderHasProduct> getOrderHasProduct() {
+		return orderHasProduct;
+	}
+
+	public void setOrderHasProduct(Set<OrderHasProduct> orderHasProduct) {
+		this.orderHasProduct = orderHasProduct;
+	}
+   
 }

@@ -1,4 +1,4 @@
-package controller;
+package com.gen.shuncosDB.controller;
 
 import java.util.List;
 
@@ -13,29 +13,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import model.Product;
-import service.ProductService;
+import com.gen.shuncosDB.model.Product;
+import com.gen.shuncosDB.service.ProductService;
 
-@RequestMapping(path="/shuncos/products")
+
+
 @RestController
+@RequestMapping("/shuncos/products")
 public class ProductController {
 	
-    private ProductService productService;
-    // Relaciones
+    private final ProductService productService;
+    //Relaciones
     //private GenreService genreService;
     //private AuthorService authorService;
 	
 	@Autowired
     public ProductController(ProductService productService) {
-		super();
 		this.productService = productService;
 	}
-
+	
 
 	// GET all books
-    @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    @GetMapping()
+    public ResponseEntity<List<Product>> getAllProducts() {
+        List<Product> products = productService.getAllProducts();
+        return ResponseEntity.ok(products);
     }
 
  // GET a single book by id
