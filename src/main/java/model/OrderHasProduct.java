@@ -14,7 +14,7 @@ import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="Order_has_Product")
+@Table(name = "Order_has_Product")
 public class OrderHasProduct {
 	
 	@EmbeddedId
