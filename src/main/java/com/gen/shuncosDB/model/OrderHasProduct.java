@@ -31,6 +31,7 @@ public class OrderHasProduct {
  	public OrderHasProduct() {
  	}
     
+ 	// Constructor with parameters
     public OrderHasProduct(OrderProductId id, Order order, Product product, Long quantity, Long size) {
 		super();
 		this.id = id;
