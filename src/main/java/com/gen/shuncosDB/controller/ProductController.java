@@ -32,10 +32,17 @@ public class ProductController {
 		this.productService = productService;
 	}
 
-	// GET all books
+	// GET all products
     @GetMapping()
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> products = productService.getAllProducts();
+        return ResponseEntity.ok(products);
+    }
+
+	// GET products by model
+    @GetMapping("/model/{model_txt}")
+    public ResponseEntity<List<Product>> getProductsByModel(@PathVariable String model_txt) {
+        List<Product> products = productService.getProductsByModel(model_txt);
         return ResponseEntity.ok(products);
     }
 
