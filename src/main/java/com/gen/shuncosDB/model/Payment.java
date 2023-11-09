@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="Payment")
 public class Payment {
@@ -29,6 +31,7 @@ public class Payment {
 	private String pin;
 	
 	@OneToOne(mappedBy = "payment")
+    @JsonBackReference
 	private Order order;
 
 	

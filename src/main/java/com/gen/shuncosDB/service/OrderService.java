@@ -45,20 +45,49 @@ public class OrderService {
     
 	//Post
     @Transactional
-	public Boolean createOrder(CrudOrder crudOrder) {	
-    	Order order = crudOrder.getOrder();
-        Address address = crudOrder.getAddress();
-        Payment payment = crudOrder.getPayment();
-        
-        Calendar today = Calendar.getInstance();    	
+	public Order createOrder(CrudOrder crudOrder) {
+    	System.out.println("****************************");
+    	System.out.println(crudOrder.toString());
+    	System.out.println("****************************");
+    	
+    	Calendar today = Calendar.getInstance();    	
+    	
+    	Order order = new Order();
     	order.setCreate_at(today.getTime());
+
+        order.setStatus(crudOrder.getStatus());
+        order.setSubtotal_price(crudOrder.getSubtotal_price());
+        order.setHas_coupon(crudOrder.isHas_coupon());
+        if (crudOrder.isHas_coupon()) {
+            order.setCoupon_text(crudOrder.getCoupon_text());
+            order.setDiscount_applied(crudOrder.getDiscount_applied());
+            order.setCoupon_percentage(crudOrder.getCoupon_percentage());
+        }
+        order.setShipment_price(crudOrder.getShipment_price());
+        order.setTotal_price(crudOrder.getTotal_price());
         
         //agregando address
+        Address address = new Address();
+    	address.setCountry(crudOrder.getCountry());
+    	address.setState(crudOrder.getState());
+    	address.setCity(crudOrder.getCity());
+    	address.setColony(crudOrder.getColony());
+    	address.setStreet(crudOrder.getStreet());
+    	address.setZip_code(crudOrder.getZip_code());
+    	address.setPhone(crudOrder.getPhone());
+    	
     	order.setAddress(address);
     	address.setOrder(order);
         //addressRepository.save(address);
         
-        //agregando payment
+
+    	//agregando payment
+        Payment payment = new Payment();        
+    	payment.setCard_number(crudOrder.getCard_number());
+    	payment.setOwner_name(crudOrder.getOwner_name());
+    	payment.setExpiration_date(crudOrder.getExpiration_date());
+    	payment.setPin(crudOrder.getPin());
+        
     	order.setPayment(payment);
     	payment.setOrder(order);
         //paymentRepository.save(payment);
@@ -69,11 +98,10 @@ public class OrderService {
         usr.getOrder().add(order);
         //userRepository.save(usr);
 
-        //agregar producto
+        //agregar productos a la orden
         //order.addProduct(json)
         
-        return true;
-        //orderRepository.save(order);
+        return orderRepository.save(order);
 	}
     
 }

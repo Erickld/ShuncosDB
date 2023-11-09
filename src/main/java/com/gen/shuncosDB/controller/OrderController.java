@@ -46,7 +46,7 @@ public class OrderController {
 
     // Post an Order
     @PostMapping
-    public Boolean createOrder(@RequestBody CrudOrder crudOrder) {
+    public Order createOrder(@RequestBody CrudOrder crudOrder) {
     	return orderService.createOrder(crudOrder);
     }
     
