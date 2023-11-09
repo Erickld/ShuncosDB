@@ -1,16 +1,22 @@
 package com.gen.shuncosDB.service;
 
+import com.gen.shuncosDB.model.Address;
+import com.gen.shuncosDB.model.CrudOrder;
 import com.gen.shuncosDB.model.Order;
+import com.gen.shuncosDB.model.Payment;
 import com.gen.shuncosDB.model.User;
+//import com.gen.shuncosDB.repository.AddressRepository;
 import com.gen.shuncosDB.repository.OrderRepository;
+//import com.gen.shuncosDB.repository.PaymentRepository;
 import com.gen.shuncosDB.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 @Service
 public class OrderService {
@@ -20,6 +26,12 @@ public class OrderService {
     
     @Autowired
     private UserRepository userRepository;
+    
+//    @Autowired
+//    private AddressRepository addressRepository;
+//
+//    @Autowired
+//    private PaymentRepository paymentRepository;
 
     // Get all products
     public List<Order> getAllOrders() {
@@ -32,40 +44,36 @@ public class OrderService {
     }
     
 	//Post
-	public Order createOrder(HashMap<String, Object> json) {		
-    	Order order = new Order();
-    	Calendar today = Calendar.getInstance();
-    
-        order.setCreate_at(today.getTime());
-        order.setStatus(((Number)json.get("status")).longValue());
-        order.setSubtotal_price((Double)json.get("subtotal_price"));
-        order.setHas_coupon((Boolean)json.get("has_coupon"));
+    @Transactional
+	public Boolean createOrder(CrudOrder crudOrder) {	
+    	Order order = crudOrder.getOrder();
+        Address address = crudOrder.getAddress();
+        Payment payment = crudOrder.getPayment();
         
-        if ((Boolean)json.get("has_coupon")) {
-            order.setCoupon_text((String)json.get("coupon_text"));
-            order.setDiscount_applied((Double)json.get("discount_applied"));
-            order.setCoupon_percentage((Double)json.get("coupon_percentage"));
-        }
-        order.setShipment_price((Double)json.get("shipment_price"));
-        order.setTotal_price((Double)json.get("total_price"));
+        Calendar today = Calendar.getInstance();    	
+    	order.setCreate_at(today.getTime());
         
         //agregando address
-        order.addAddress(json);
+    	order.setAddress(address);
+    	address.setOrder(order);
+        //addressRepository.save(address);
         
         //agregando payment
-        order.addPayment(json);
-        
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    	order.setPayment(payment);
+    	payment.setOrder(order);
+        //paymentRepository.save(payment);
         
         //agregando usuario a la orden
-        User usr = userRepository.findById(((Number)json.get("user_id")).longValue()).orElse(null);
+        User usr = userRepository.findById(crudOrder.getUser_id()).orElse(null);
         order.setUser(usr);
-        //usr.getOrder().add(order);
+        usr.getOrder().add(order);
         //userRepository.save(usr);
 
         //agregar producto
         //order.addProduct(json)
-
-		return orderRepository.save(order);
+        
+        return true;
+        //orderRepository.save(order);
 	}
+    
 }

@@ -4,7 +4,6 @@ package com.gen.shuncosDB.model;
 import javax.persistence.*;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -88,45 +87,7 @@ public class Order {
 		this.address = address;
 		this.payment = payment;
 		this.orderHasProduct = orderHasProduct;
-	}
-
-	
-	// Method to add a book to the order
-    public void addAddress(HashMap<String, Object> json) {
-    	Address address = new Address();
-    	address.setCountry((String)json.get("country"));
-    	address.setState((String)json.get("state"));
-    	address.setCity((String)json.get("city"));
-    	address.setColony((String)json.get("colony"));
-    	address.setStreet((String)json.get("street"));
-    	address.setZip_code((String)json.get("zip_code"));
-    	address.setPhone((String)json.get("phone"));
-    	this.setAddress(address);
-    	address.setOrder(this);
-    }
-
-
-    public void addPayment(HashMap<String, Object> json) {
-    	Payment payment = new Payment();
-    	payment.setCard_number((String)json.get("card_number"));
-    	payment.setOwner_name((String)json.get("owner_name"));
-    	payment.setExpiration_date((String)json.get("expiration_date"));
-    	payment.setPin((String)json.get("pin"));
-    	this.setPayment(payment);
-    	payment.setOrder(this);
-
-    }
-
-    
-    // Method to remove a book from the order
-//    public void removeBook(Book book) {
-//        OrderHasBook.OrderBookId orderBookId = new OrderHasBook.OrderBookId(this.getId(), book.getId());
-//        OrderHasBook orderHasBook = new OrderHasBook(orderBookId, this, book, 0); // Quantity is not relevant for removal
-//        book.getOrderHasBooks().remove(orderHasBook);
-//        this.orderHasBooks.remove(orderHasBook);
-//        // Explicitly setting the relationships to null is handled by orphanRemoval = true in the @OneToMany annotation
-//    }
-	
+	}	
 
 	public Long getOrder_id() {
 		return order_id;

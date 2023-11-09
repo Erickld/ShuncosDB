@@ -9,11 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.util.HashMap;
 import java.util.List;
 
+import com.gen.shuncosDB.model.CrudOrder;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/shuncos/orders")
 public class OrderController {
     private final OrderService orderService;
@@ -45,14 +46,8 @@ public class OrderController {
 
     // Post an Order
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody HashMap<String, Object> json) {
-    	Order order = orderService.createOrder(json);
-        if(order != null){
-            return ResponseEntity.ok(order);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public Boolean createOrder(@RequestBody CrudOrder crudOrder) {
+    	return orderService.createOrder(crudOrder);
     }
-    
     
 }
