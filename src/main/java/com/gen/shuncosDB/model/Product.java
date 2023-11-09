@@ -56,6 +56,8 @@ public class Product {
         this.price = price;
     }
 
+
+
     public Long getProduct_id() {
         return product_id;
     }
