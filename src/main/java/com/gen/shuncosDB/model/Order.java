@@ -2,6 +2,10 @@ package com.gen.shuncosDB.model;
 
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -46,19 +50,23 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="User_user_id", nullable = false)
+    @JsonBackReference
     private User user;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="Address_address_id", referencedColumnName = "address_id")
+	@JsonManagedReference
     private Address address;
 
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Payment_payment_id", referencedColumnName = "payment_id")
+	@JsonManagedReference
     private Payment payment;
 
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<OrderHasProduct> orderHasProduct = new HashSet<>();
 
 
@@ -86,8 +94,7 @@ public class Order {
 		this.address = address;
 		this.payment = payment;
 		this.orderHasProduct = orderHasProduct;
-	}
-
+	}	
 
 	public Long getOrder_id() {
 		return order_id;

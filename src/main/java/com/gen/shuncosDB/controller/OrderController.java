@@ -1,18 +1,21 @@
 package com.gen.shuncosDB.controller;
 
 
+
 import com.gen.shuncosDB.model.Order;
-import com.gen.shuncosDB.model.OrderHasProduct;
 import com.gen.shuncosDB.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+
 import java.util.List;
 
+import com.gen.shuncosDB.model.CrudOrder;
+
 @RestController
-@RequestMapping("shuncos/orders")
+@CrossOrigin
+@RequestMapping("/shuncos/orders")
 public class OrderController {
     private final OrderService orderService;
 
@@ -42,11 +45,9 @@ public class OrderController {
     }
 
     // Post an Order
-
     @PostMapping
-    public Order createOrder(@RequestBody HashMap<String, String> json) {
-
-
-        return null;
+    public Order createOrder(@RequestBody CrudOrder crudOrder) {
+    	return orderService.createOrder(crudOrder);
     }
+    
 }
