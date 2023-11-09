@@ -1,10 +1,12 @@
 package com.gen.shuncosDB.controller;
 
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +22,7 @@ import com.gen.shuncosDB.service.UserService;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping("/shuncos/user")
 public class UserController {
 	private final UserService userService;
@@ -40,7 +43,7 @@ public class UserController {
     }
 
 
- // GET a single book by id
+    // GET a single user by id
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
     	User user =userService.getUserById(id);
@@ -51,16 +54,16 @@ public class UserController {
         }
     }
 
-    // POST a new book
+    // POST a new user
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public User createUser(@RequestBody HashMap<String, String> userJson) {
+        return userService.createUser(userJson);
     }
 
-    // PUT to update a book
+    // PUT to update a user
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
-    	User updatedUsuario = userService.updateUser(id, userDetails);
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody HashMap<String, String> userJson) {
+    	User updatedUsuario = userService.updateUser(id, userJson);
         if (updatedUsuario != null) {
             return ResponseEntity.ok(updatedUsuario);
         } else {

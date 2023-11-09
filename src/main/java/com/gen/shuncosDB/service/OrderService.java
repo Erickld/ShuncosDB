@@ -13,6 +13,7 @@ import com.gen.shuncosDB.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -38,6 +39,18 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
+	//Get orders filter by user
+	public List<Order> getOrdersByUser(Long user_id){
+		List<Order> filterOrders = new ArrayList<>();
+		for (Order order : orderRepository.findAll()) {
+			if (order.getUser().getUser_id() == user_id) {
+				filterOrders.add(order);
+			}
+		}
+		return filterOrders;
+	}
+    
+    
     // Get one order by Id
     public Order getOrderById(Long id){
         return orderRepository.findById(id).orElse(null);
@@ -46,10 +59,6 @@ public class OrderService {
 	//Post
     @Transactional
 	public Order createOrder(CrudOrder crudOrder) {
-    	System.out.println("****************************");
-    	System.out.println(crudOrder.toString());
-    	System.out.println("****************************");
-    	
     	Calendar today = Calendar.getInstance();    	
     	
     	Order order = new Order();
@@ -78,7 +87,7 @@ public class OrderService {
     	
     	order.setAddress(address);
     	address.setOrder(order);
-        //addressRepository.save(address);
+//        addressRepository.save(address);
         
 
     	//agregando payment
@@ -90,13 +99,13 @@ public class OrderService {
         
     	order.setPayment(payment);
     	payment.setOrder(order);
-        //paymentRepository.save(payment);
+//        paymentRepository.save(payment);
         
         //agregando usuario a la orden
         User usr = userRepository.findById(crudOrder.getUser_id()).orElse(null);
         order.setUser(usr);
         usr.getOrder().add(order);
-        //userRepository.save(usr);
+//        userRepository.save(usr);
 
         //agregar productos a la orden
         //order.addProduct(json)

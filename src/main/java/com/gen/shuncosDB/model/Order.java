@@ -3,7 +3,6 @@ package com.gen.shuncosDB.model;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.Date;
@@ -48,9 +47,9 @@ public class Order {
 
     // Relaciones de la tabla Order
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name="User_user_id", nullable = false)
-    @JsonBackReference
+    @JsonManagedReference
     private User user;
 
     @OneToOne(cascade = CascadeType.ALL)

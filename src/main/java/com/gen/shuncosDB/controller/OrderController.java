@@ -1,7 +1,5 @@
 package com.gen.shuncosDB.controller;
 
-
-
 import com.gen.shuncosDB.model.Order;
 import com.gen.shuncosDB.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +30,14 @@ public class OrderController {
         List<Order> orders = orderService.getAllOrders();
         return ResponseEntity.ok(orders);
     }
+
+	// GET orders by user
+    @GetMapping("/user/{user_id}")
+    public ResponseEntity<List<Order>> getOrdersByUser(@PathVariable Long user_id) {
+        List<Order> orders = orderService.getOrdersByUser(user_id);
+        return ResponseEntity.ok(orders);
+    }
+    
 
     // GET a single order by Id
     @GetMapping("/{id}")
