@@ -1,5 +1,6 @@
 package com.gen.shuncosDB.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,20 +27,31 @@ public class UserService {
 	}
 
 	//Post
-	public User createUser(User user) {
+	public User createUser(HashMap<String, String> userJson) {
+		User user = new User();
+		user.setFirst_name(userJson.get("first_name"));		
+		user.setLast_name(userJson.get("last_name"));
+		user.setUsername(userJson.get("username"));
+		user.setEmail(userJson.get("email"));
+		user.setPassword(userJson.get("password"));
+		user.setIs_admin(false);
 		return userRepository.save(user);
 	}
 	
 	//Put
-	public User updateUser(Long id, User userDetails) {
+	public User updateUser(Long id, HashMap<String, String> userJson) {
 		User user = userRepository.findById(id).orElse(null);
+		user.setFirst_name(userJson.get("first_name"));		
+		user.setLast_name(userJson.get("last_name"));
+		user.setUsername(userJson.get("username"));
+		user.setEmail(userJson.get("email"));
+		user.setPassword(userJson.get("password"));
 		
-		user.setFirst_name(userDetails.getFirst_name());
-		user.setLast_name(userDetails.getLast_name());
-		user.setUsername(userDetails.getUsername());
-		user.setEmail(userDetails.getEmail());
-		user.setPassword(userDetails.getPassword());
-		//user.setIs_admin(userDetails.getIs_admin());
+		System.out.println(user);
+		System.out.println(user);
+		System.out.println(user);
+		System.out.println(user);
+		System.out.println(user);
 		
 		return userRepository.save(user);
 		
