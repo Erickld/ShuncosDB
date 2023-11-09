@@ -1,18 +1,20 @@
 package com.gen.shuncosDB.controller;
 
 
+
 import com.gen.shuncosDB.model.Order;
-import com.gen.shuncosDB.model.OrderHasProduct;
 import com.gen.shuncosDB.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.HashMap;
 import java.util.List;
 
+
 @RestController
-@RequestMapping("shuncos/orders")
+@RequestMapping("/shuncos/orders")
 public class OrderController {
     private final OrderService orderService;
 
@@ -42,11 +44,15 @@ public class OrderController {
     }
 
     // Post an Order
-
     @PostMapping
-    public Order createOrder(@RequestBody HashMap<String, String> json) {
-
-
-        return null;
+    public ResponseEntity<Order> createOrder(@RequestBody HashMap<String, Object> json) {
+    	Order order = orderService.createOrder(json);
+        if(order != null){
+            return ResponseEntity.ok(order);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
+    
+    
 }
