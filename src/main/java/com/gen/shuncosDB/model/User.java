@@ -6,7 +6,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "User")
@@ -35,7 +35,7 @@ public class User {
     private boolean is_admin;
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonBackReference
     private Set<Order> order = new HashSet<>();
 
 	public User() {
