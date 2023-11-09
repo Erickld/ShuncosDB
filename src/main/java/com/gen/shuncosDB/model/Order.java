@@ -95,6 +95,16 @@ public class Order {
 		this.orderHasProduct = orderHasProduct;
 	}	
 
+
+	// Method to add a book to the order
+    public void addProduct(Product product, Long size, Long quantity) {    	
+        OrderHasProduct.OrderProductId orderProductId = new OrderHasProduct.OrderProductId(this.getOrder_id(), product.getProduct_id());
+        OrderHasProduct orderHasProduct = new OrderHasProduct(orderProductId, this, product, quantity, size);
+        this.orderHasProduct.add(orderHasProduct);
+        product.getOrderHasProduct().add(orderHasProduct);
+    }
+
+	
 	public Long getOrder_id() {
 		return order_id;
 	}

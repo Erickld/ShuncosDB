@@ -4,9 +4,11 @@ import com.gen.shuncosDB.model.Address;
 import com.gen.shuncosDB.model.CrudOrder;
 import com.gen.shuncosDB.model.Order;
 import com.gen.shuncosDB.model.Payment;
+import com.gen.shuncosDB.model.Product;
 import com.gen.shuncosDB.model.User;
 //import com.gen.shuncosDB.repository.AddressRepository;
 import com.gen.shuncosDB.repository.OrderRepository;
+import com.gen.shuncosDB.repository.ProductRepository;
 //import com.gen.shuncosDB.repository.PaymentRepository;
 import com.gen.shuncosDB.repository.UserRepository;
 
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -27,6 +30,9 @@ public class OrderService {
     
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private ProductRepository productRepository;
     
 //    @Autowired
 //    private AddressRepository addressRepository;
@@ -108,6 +114,10 @@ public class OrderService {
 //        userRepository.save(usr);
 
         //agregar productos a la orden
+        for (HashMap<String, Long> prod : crudOrder.getLista_productos()) {	
+        	Product currentProd = productRepository.findById(prod.get("id")).orElse(null);
+        	order.addProduct(currentProd, prod.get("size"), prod.get("quantity"));
+		}
         //order.addProduct(json)
         
         return orderRepository.save(order);
