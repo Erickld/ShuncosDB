@@ -10,8 +10,6 @@ import com.gen.shuncosDB.model.User;
 import com.gen.shuncosDB.repository.UserRepository;
 
 @Service
-
-
 public class UserService {
 	@Autowired
 	private UserRepository userRepository;
@@ -46,12 +44,6 @@ public class UserService {
 		user.setUsername(userJson.get("username"));
 		user.setEmail(userJson.get("email"));
 		user.setPassword(userJson.get("password"));
-		
-		System.out.println(user);
-		System.out.println(user);
-		System.out.println(user);
-		System.out.println(user);
-		System.out.println(user);
 		
 		return userRepository.save(user);
 		

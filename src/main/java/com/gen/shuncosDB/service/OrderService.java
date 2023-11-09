@@ -46,10 +46,6 @@ public class OrderService {
 	//Post
     @Transactional
 	public Order createOrder(CrudOrder crudOrder) {
-//    	System.out.println("****************************");
-//    	System.out.println(crudOrder.toString());
-//    	System.out.println("****************************");
-    	
     	Calendar today = Calendar.getInstance();    	
     	
     	Order order = new Order();
