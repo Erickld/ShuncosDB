@@ -3,6 +3,7 @@ package com.gen.shuncosDB.model;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.Date;
@@ -19,6 +20,7 @@ public class Order {
 
     @Column(name="create_at", nullable = false)
     @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern="dd/MM/yyyy")
     private Date create_at;
 
     @Column(name="status", nullable = false)
