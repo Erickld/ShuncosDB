@@ -1,5 +1,6 @@
 package com.gen.shuncosDB.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,12 @@ public class ProductService {
 	public List<Product> getAllProducts(){
 		return productRepository.findAll();
 	}
+	
+	//Get products filter by model
+	public List<Product> getProductsByModel(String modelTxt){
+		return productRepository.findByModelContaining(modelTxt);
+	}
+
 
 	//Get
 	public Product getProductById(Long id){
@@ -26,22 +33,33 @@ public class ProductService {
 	}
 
 	//Post
-	public Product createProduct(Product product) {
+	public Product createProduct(HashMap<String, Object> productJson) {
+		Product product = new Product();
+
+		product.setModel((String)productJson.get("model"));
+		product.setImage_url((String)productJson.get("image_url"));
+		product.setSleeve_type((String)productJson.get("sleeve_type"));
+		product.setGenre((String)productJson.get("genre"));
+		product.setIs_adult_size((boolean)productJson.get("is_adult_size"));
+		product.setSize_list((String)productJson.get("size_list"));
+		product.setColor((String)productJson.get("color"));
+		product.setPrice(Double.parseDouble((String)productJson.get("price")));
+		
 		return productRepository.save(product);
 	}
 	
 	//Put
-	public Product updateProduct(Long id, Product productDetails) {
+	public Product updateProduct(Long id, HashMap<String, Object> productJson) {
 		Product product = productRepository.findById(id).orElse(null);
 		
-		product.setModel(productDetails.getModel());
-		product.setImage_url(productDetails.getImage_url());
-		product.setSleeve_type(productDetails.getSleeve_type());
-		product.setGenre(productDetails.getGenre());
-		product.setIs_adult_size(productDetails.isIs_adult_size());
-		product.setSize_list(productDetails.getSize_list());
-		product.setColor(productDetails.getColor());
-		product.setPrice(productDetails.getPrice());
+		product.setModel((String)productJson.get("model"));
+		product.setImage_url((String)productJson.get("image_url"));
+		product.setSleeve_type((String)productJson.get("sleeve_type"));
+		product.setGenre((String)productJson.get("genre"));
+		product.setIs_adult_size((boolean)productJson.get("is_adult_size"));
+		product.setSize_list((String)productJson.get("size_list"));
+		product.setColor((String)productJson.get("color"));
+		product.setPrice(Double.parseDouble((String)productJson.get("price")));
 		
 		return productRepository.save(product);
 	}

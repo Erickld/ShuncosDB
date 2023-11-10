@@ -1,19 +1,19 @@
 package com.gen.shuncosDB.controller;
 
-
 import com.gen.shuncosDB.model.Order;
 import com.gen.shuncosDB.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
+import com.gen.shuncosDB.model.CrudOrder;
+
 @RestController
-@RequestMapping("shuncos/orders")
+@CrossOrigin
+@RequestMapping("/shuncos/orders")
 public class OrderController {
     private final OrderService orderService;
 
@@ -31,6 +31,14 @@ public class OrderController {
         return ResponseEntity.ok(orders);
     }
 
+	// GET orders by user
+    @GetMapping("/user/{user_id}")
+    public ResponseEntity<List<Order>> getOrdersByUser(@PathVariable Long user_id) {
+        List<Order> orders = orderService.getOrdersByUser(user_id);
+        return ResponseEntity.ok(orders);
+    }
+    
+
     // GET a single order by Id
     @GetMapping("/{id}")
     public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
@@ -43,4 +51,9 @@ public class OrderController {
     }
 
     // Post an Order
+    @PostMapping
+    public Order createOrder(@RequestBody CrudOrder crudOrder) {
+    	return orderService.createOrder(crudOrder);
+    }
+    
 }

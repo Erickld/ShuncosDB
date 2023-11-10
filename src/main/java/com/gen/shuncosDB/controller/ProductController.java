@@ -1,9 +1,11 @@
 package com.gen.shuncosDB.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,8 +19,8 @@ import com.gen.shuncosDB.model.Product;
 import com.gen.shuncosDB.service.ProductService;
 
 
-
 @RestController
+@CrossOrigin
 @RequestMapping("/shuncos/products")
 public class ProductController {
 	
@@ -32,10 +34,17 @@ public class ProductController {
 		this.productService = productService;
 	}
 
-	// GET all books
+	// GET all products
     @GetMapping()
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> products = productService.getAllProducts();
+        return ResponseEntity.ok(products);
+    }
+
+	// GET products by model
+    @GetMapping("/model/{model_txt}")
+    public ResponseEntity<List<Product>> getProductsByModel(@PathVariable String model_txt) {
+        List<Product> products = productService.getProductsByModel(model_txt);
         return ResponseEntity.ok(products);
     }
 
@@ -52,14 +61,14 @@ public class ProductController {
 
     // POST a new product
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-        return productService.createProduct(product);
+    public Product createProduct(@RequestBody HashMap<String, Object> productJson) {
+        return productService.createProduct(productJson);
     }
 
     // PUT to update a product
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
-        Product updatedProd = productService.updateProduct(id, productDetails);
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody HashMap<String, Object> productJson) {
+        Product updatedProd = productService.updateProduct(id, productJson);
         if (updatedProd != null) {
             return ResponseEntity.ok(updatedProd);
         } else {

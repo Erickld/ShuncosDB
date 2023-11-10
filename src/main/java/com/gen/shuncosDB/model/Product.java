@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "Product")
 public class Product {
@@ -38,6 +40,7 @@ public class Product {
     private Double price;
     
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<OrderHasProduct> orderHasProduct = new HashSet<>();
 
     public Product() {
@@ -55,6 +58,8 @@ public class Product {
         this.color = color;
         this.price = price;
     }
+
+
 
     public Long getProduct_id() {
         return product_id;

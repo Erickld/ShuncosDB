@@ -1,6 +1,9 @@
 package com.gen.shuncosDB.model;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -14,11 +17,13 @@ public class OrderHasProduct {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("orderId")
     @JoinColumn(name = "Order_order_id")
+    @JsonBackReference
     private Order order;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("productId")
     @JoinColumn(name = "Product_product_id")
+    @JsonBackReference
     private Product product;
     
     @Column(name = "quantity")
@@ -31,6 +36,7 @@ public class OrderHasProduct {
  	public OrderHasProduct() {
  	}
     
+ 	// Constructor with parameters
     public OrderHasProduct(OrderProductId id, Order order, Product product, Long quantity, Long size) {
 		super();
 		this.id = id;

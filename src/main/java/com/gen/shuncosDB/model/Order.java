@@ -2,6 +2,9 @@ package com.gen.shuncosDB.model;
 
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -44,21 +47,25 @@ public class Order {
 
     // Relaciones de la tabla Order
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name="User_user_id", nullable = false)
+    @JsonManagedReference
     private User user;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="Address_address_id", referencedColumnName = "address_id")
+	@JsonManagedReference
     private Address address;
 
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Payment_payment_id", referencedColumnName = "payment_id")
+	@JsonManagedReference
     private Payment payment;
 
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<OrderHasProduct> orderHasProduct = new HashSet<>();
 
 
@@ -86,9 +93,18 @@ public class Order {
 		this.address = address;
 		this.payment = payment;
 		this.orderHasProduct = orderHasProduct;
-	}
+	}	
 
 
+	// Method to add a book to the order
+    public void addProduct(Product product, Long size, Long quantity) {    	
+        OrderHasProduct.OrderProductId orderProductId = new OrderHasProduct.OrderProductId(this.getOrder_id(), product.getProduct_id());
+        OrderHasProduct orderHasProduct = new OrderHasProduct(orderProductId, this, product, quantity, size);
+        this.orderHasProduct.add(orderHasProduct);
+        product.getOrderHasProduct().add(orderHasProduct);
+    }
+
+	
 	public Long getOrder_id() {
 		return order_id;
 	}
