@@ -24,8 +24,49 @@ public class UserService {
 		return userRepository.findById(id).orElse(null);
 	}
 
-	//Post
-	public User createUser(HashMap<String, String> userJson) {
+	
+
+	
+	//Peticion para el login de User
+	public HashMap<String, Object> loginUser(HashMap<String, String> userJson) {
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		response.put("userFinded", false);
+	    for (User usrx : userRepository.findAll()) {
+	        if (usrx.getUsername().equals(userJson.get("username")) && usrx.getPassword().equals(userJson.get("password"))) {
+	        	response.put("userFinded", true);
+	        	response.put("user", usrx);
+	            break;
+	        }
+		}
+	    return response;
+	}
+	
+	
+	//Post para crear usuario
+	public HashMap<String, Object> createUser(HashMap<String, String> userJson) {
+		
+		//Validamos si el correo y username del nuevo usuario ya se encuentra registrado por otro usuario
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		response.put("usernameInUse", false);
+		response.put("emailInUse", false);
+
+	    
+	    for (User usrx : userRepository.findAll()) {
+	        if(usrx.getUsername().equals(userJson.get("username"))) {
+	        	response.put("usernameInUse", true);
+	            break;
+	        }
+	        if(usrx.getEmail().equals(userJson.get("email"))) {
+	        	response.put("emailInUse", true);
+	            break;
+	        }
+		}
+	    
+	    if((boolean)response.get("usernameInUse") || (boolean)response.get("emailInUse")) {
+	        return response;
+	    }
+
+	    //Se crea usuario
 		User user = new User();
 		user.setFirst_name(userJson.get("first_name"));		
 		user.setLast_name(userJson.get("last_name"));
@@ -33,9 +74,14 @@ public class UserService {
 		user.setEmail(userJson.get("email"));
 		user.setPassword(userJson.get("password"));
 		user.setIs_admin(false);
-		return userRepository.save(user);
+		userRepository.save(user);
+		
+		response.put("user", user);
+		return response;
 	}
-	
+
+
+
 	//Put
 	public User updateUser(Long id, HashMap<String, String> userJson) {
 		User user = userRepository.findById(id).orElse(null);

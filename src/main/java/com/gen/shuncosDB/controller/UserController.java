@@ -27,8 +27,6 @@ import com.gen.shuncosDB.service.UserService;
 public class UserController {
 	private final UserService userService;
     //Relaciones
-    //private GenreService genreService;
-    //private AuthorService authorService;
 	
 	@Autowired
     public UserController(UserService userService) {
@@ -46,7 +44,7 @@ public class UserController {
     // GET a single user by id
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-    	User user =userService.getUserById(id);
+    	User user = userService.getUserById(id);
         if (user != null) {
             return ResponseEntity.ok(user);
         } else {
@@ -54,12 +52,14 @@ public class UserController {
         }
     }
 
+    
     // POST a new user
     @PostMapping
-    public User createUser(@RequestBody HashMap<String, String> userJson) {
+    public HashMap<String, Object> createUser(@RequestBody HashMap<String, String> userJson) {
         return userService.createUser(userJson);
     }
 
+    
     // PUT to update a user
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody HashMap<String, String> userJson) {
@@ -82,4 +82,11 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+ 
+    // POST a para el login de usuario
+    @PostMapping("/login")
+    public HashMap<String, Object> loginUser(@RequestBody HashMap<String, String> userJson) {
+        return userService.loginUser(userJson);
+    }
+    
 }
