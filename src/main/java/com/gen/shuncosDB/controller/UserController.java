@@ -62,13 +62,14 @@ public class UserController {
     
     // PUT to update a user
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody HashMap<String, String> userJson) {
-    	User updatedUsuario = userService.updateUser(id, userJson);
-        if (updatedUsuario != null) {
-            return ResponseEntity.ok(updatedUsuario);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<HashMap<String, Object>> updateUser(@PathVariable Long id, @RequestBody HashMap<String, String> userJson) {
+    	return ResponseEntity.ok(userService.updateUser(id, userJson));
+    	//    	User updatedUsuario = userService.updateUser(id, userJson);
+//        if (updatedUsuario != null) {
+//            return ResponseEntity.ok(updatedUsuario);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
     }
 
     // DELETE a book

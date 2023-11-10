@@ -25,8 +25,6 @@ public class UserService {
 	}
 
 	
-
-	
 	//Peticion para el login de User
 	public HashMap<String, Object> loginUser(HashMap<String, String> userJson) {
 		HashMap<String, Object> response = new HashMap<String, Object>();
@@ -83,7 +81,28 @@ public class UserService {
 
 
 	//Put
-	public User updateUser(Long id, HashMap<String, String> userJson) {
+	public HashMap<String, Object> updateUser(Long id, HashMap<String, String> userJson) {	    
+		//Validamos si el correo y username del nuevo usuario ya se encuentra registrado por otro usuario
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		response.put("usernameInUse", false);
+		response.put("emailInUse", false);
+
+		 //&& usr.id !== currentUserx.id
+	    for (User usrx : userRepository.findAll()) {
+	        if(usrx.getUsername().equals(userJson.get("username")) && usrx.getUser_id() != id) {
+	        	response.put("usernameInUse", true);
+	            break;
+	        }
+	        if(usrx.getEmail().equals(userJson.get("email")) && usrx.getUser_id() != id) {
+	        	response.put("emailInUse", true);
+	            break;
+	        }
+		}
+	    
+	    if((boolean)response.get("usernameInUse") || (boolean)response.get("emailInUse")) {
+	        return response;
+	    }
+	    
 		User user = userRepository.findById(id).orElse(null);
 		user.setFirst_name(userJson.get("first_name"));		
 		user.setLast_name(userJson.get("last_name"));
@@ -91,7 +110,9 @@ public class UserService {
 		user.setEmail(userJson.get("email"));
 		user.setPassword(userJson.get("password"));
 		
-		return userRepository.save(user);
+		userRepository.save(user);
+		response.put("user", user);
+		return response;
 		
 	}
 	
